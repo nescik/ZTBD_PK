@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Użytkownicy{% endblock %}
+
+
+{% block content %}
+
+        <div class="row pb-5 row_crud">
+          <form class="row g-3 justify-content-center" method="POST" action="{{ url_for('search_user') }}">
+            <h4 class=" text-center text-white">Wyszukaj użytkownika</h4>
+            <div class="col-auto">
+              <input type="number" class="form-control" id="user_id" name="user_id" required>
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Szukaj</button>
+            </div>
+          </form>
+          <h4 class=" text-center text-white pt-2">Dodaj użytkownika</h4>
+          <button type="button" class="btn btn-success btn_add" data-bs-toggle="modal" data-bs-target="#add_user">
+            Dodaj
+          </button>
+          
+          {% with messages = get_flashed_messages() %}
+              {% if messages %}
+              <ul class=flashes>
+              {% for message in messages %}
+              <div class="alert alert-danger text-center mt-5 py-3" role="alert">
+                <h5> {{ message }} </h5>
+              </div>
+              {% endfor %}
+              </ul>
+              {% endif %}
+          {% endwith %}
+          
+          <div class="row text-center text-white text_count">
+            <h5>Liczba wszystkich rekordów: <strong> {{ users_count }} </strong></h5>
+          </div>
+        </div>
+
+
+        <table class="table tb_users">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Imie </th>
+                <th scope="col">Nazwisko </th>
+                <th scope="col">Data urodzin</th>
+                <th scope="col">Numer telefonu</th>
+                <th scope="col">Kraj</th>
+                <th scope="col">Operacje</th>
+              </tr>
+            </thead>
+            <tbody>
+
+                {% for user in users %}
+                  <tr>
+                    <th scope="row">{{user.id}}</th>
+                    <td>{{user.first_name}}</td>
+                    <td>{{user.last_name}}</td>
+                    <td>{{user.dob}}</td>
+                    <td>{{user.phone_number}}</td>
+                    <td>{{user.country}}</td>
+                    <td>
+
+                      <a href="{{ url_for('edit_user', user_id = user.id) }}"
+                      class="btn btn-success" role="button">
+                      Edytuj
+                      </a>
+                      <a href="{{ url_for('delete_user', user_id = user.id) }}"
+                      class="btn btn-danger" type="button">
+                        Usuń
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+
+              {% if user %}
+                
+              {% endif %}
+                
+            </tbody>
+          </table>
+          <ul class="pagination justify-content-center">
+
+            {% if users.has_prev %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('users', page_num=users.prev_num) }}">Poprzednia</a></li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">Poprzednia</span>
+            {% endif %}
+              </li>
+
+            {% for page in users.iter_pages(left_edge=3, right_edge=3) %}
+              {% if page %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ url_for('users', page_num=page) }}">{{ page }}</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled" id="example_ellipsis">
+                  <a href="#" class="page-link">...</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if users.has_next %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('users', page_num=users.next_num) }}">Następna</a></li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">Następna</span>
+            {% endif %}
+            
+          </ul>
+
+          <!-- Modal ADD -->
+          <div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Dodaj użytkownika</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                  <div class="modal-body">
+                    <form method="POST" action="{{ url_for('add_user') }}">
+                    <div class="col-auto">
+                        <label for="first_name" class="form-label">Imie</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="col-auto">
+                      <label for="last_name" class="form-label">Nazwisko</label>
+                      <input type="text" class="form-control" id="last_name" name="last_name" required>
+                    </div>
+                    <div class="col-auto">
+                      <label for="dob" class="form-label">Data urodzenia</label>
+                      <input type="date" class="form-control" id="dob" name="dob" required>
+                    </div>
+                    <div class="col-auto">
+                      <label for="phone_number" class="form-label">Numer telefonu</label>
+                      <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+                    </div>
+                    <div class="col-auto">
+                      <label for="country" class="form-label">Kraj</label>
+                      <input type="text" class="form-control" id="country" name="country" required>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Zapisz</button>
+                  </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          
+
+{% endblock %}
+

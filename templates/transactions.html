@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Transakcje{% endblock %}
+
+
+{% block content %}
+
+<div class="row pb-5 row_crud">
+  <form class="row g-3 justify-content-center" method="POST" action="{{ url_for('search_transaction') }}">
+    <h4 class=" text-center text-white">Wyszukaj transakcje</h4>
+    <div class="col-auto">
+      <input type="number" class="form-control" id="trans_id" name="trans_id" required>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-3">Szukaj</button>
+    </div>
+  </form>
+  <h4 class=" text-center text-white pt-2">Dodaj transakcje</h4>
+  <button type="button" class="btn btn-success btn_add" data-bs-toggle="modal" data-bs-target="#add_transaction">
+    Dodaj
+  </button>
+  
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+      <div class="alert alert-danger text-center mt-5 py-3" role="alert">
+        <h5> {{ message }} </h5>
+      </div>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+
+  <div class="row text-center text-white text_count">
+    <h5>Liczba wszystkich rekordów: <strong> {{ transactions_count }} </strong></h5>
+  </div>
+</div>
+
+
+<table class="table tb_food ">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Klient</th>
+        <th scope="col">Produkt</th>
+        <th scope="col">Data transakcji</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for t in trans %}
+        <tr>
+          <th scope="row">{{t.id}}</th>
+          <td>{{t.user.first_name}} {{t.user.last_name}}</td>
+          <td>{{t.food.food_name}}</td>
+          <td>{{t.date}}</td>
+          <td>
+            <a href="{{ url_for('edit_transaction', transaction_id = t.id) }}"
+              class="btn btn-success" role="button">
+              Edytuj
+            </a>
+            <a href="{{ url_for('delete_transaction', transaction_id = t.id) }}"
+              class="btn btn-danger" type="button">
+                Usuń
+            </a>
+          </td>
+        </tr>
+      {% endfor %} 
+      
+
+    </tbody>
+  </table>
+  <ul class="pagination justify-content-center">
+
+    {% if trans.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('transactions', page_num=trans.prev_num) }}">Poprzednia</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Poprzednia</span>
+    {% endif %}
+      </li>
+
+    {% for page in trans.iter_pages(left_edge=3, right_edge=3) %}
+      {% if page %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('transactions', page_num=page) }}">{{ page }}</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled" id="example_ellipsis">
+          <a href="#" class="page-link">...</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if trans.has_next %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('transactions', page_num=trans.next_num) }}">Następna</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Następna</span>
+    {% endif %}
+    
+  </ul>
+
+
+
+  <div class="modal fade" id="add_transaction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Dodaj transakcje</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          <div class="modal-body">
+            <form method="POST" action="{{ url_for('add_transaction') }}">
+            <div class="col-auto">
+                <label for="user_id" class="form-label">ID użytkownika</label>
+                <input type="number" class="form-control" id="user_id" name="user_id" required>
+            </div>
+            <div class="col-auto">
+              <label for="food_id" class="form-label">ID jedzenia</label>
+              <input type="number" class="form-control" id="food_id" name="food_id" required>
+          </div>
+          <div class="col-auto">
+            <label for="trans_date" class="form-label">Data</label>
+            <input type="date" class="form-control" id="trans_date" name="trans_date" required>
+        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Zapisz</button>
+          </form>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

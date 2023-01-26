@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Transakcja{% endblock %}
+
+
+{% block content %}
+
+    <table class="table tb_users">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Klient</th>
+            <th scope="col">Produkt</th>
+            <th scope="col">Data transakcji</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <th scope="row">{{transaction.id}}</th>
+                <td>{{transaction.user.first_name}} {{transaction.user.last_name}}</td>
+                <td>{{transaction.food.food_name}}</td>
+                <td>{{transaction.date}}</td>
+                <td>
+                  <a href="{{ url_for('edit_transaction', transaction_id = transaction.id) }}"
+                    class="btn btn-success" role="button">
+                    Edytuj
+                  </a>
+                  <a href="{{ url_for('delete_transaction', transaction_id = transaction.id) }}"
+                    class="btn btn-danger" type="button">
+                      Usuń
+                  </a>
+                </td>
+              </tr>
+
+        </tbody>
+    </table>    
+{% endblock %}

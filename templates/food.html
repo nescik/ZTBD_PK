@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Jedzenie{% endblock %}
+
+
+{% block content %}
+
+<div class="row pb-5 row_crud">
+  <form class="row g-3 justify-content-center" method="POST" action="{{ url_for('search_food') }}">
+    <h4 class=" text-center text-white">Wyszukaj jedzenie</h4>
+    <div class="col-auto">
+      <input type="number" class="form-control" id="food_id" name="food_id" required>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-3">Szukaj</button>
+    </div>
+  </form>
+  <h4 class=" text-center text-white pt-2">Dodaj jedzenie</h4>
+  <button type="button" class="btn btn-success btn_add" data-bs-toggle="modal" data-bs-target="#add_food">
+    Dodaj
+  </button>
+
+  {% if error %}
+  <div class="alert alert-danger text-center" role="alert">
+      <h5> {{ error }} </h5>
+  </div>
+  {% endif %}
+
+  <div class="row text-center text-white text_count">
+    <h5>Liczba wszystkich rekordów: <strong> {{ food_count }} </strong></h5>
+  </div>
+</div>
+
+<table class="table tb_food ">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nazwa </th>
+        <th scope="col">Operacje</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for f in food %}
+        <tr>
+          <th scope="row">{{f.id}}</th>
+          <td>{{f.food_name}}</td>
+          <td>
+            <a href="{{ url_for('edit_food', food_id = f.id) }}"
+              class="btn btn-success" role="button">
+              Edytuj
+            </a>
+            <a href="{{ url_for('delete_food', food_id = f.id) }}"
+              class="btn btn-danger" type="button">
+                Usuń
+            </a>
+          </td>
+        </tr>
+      {% endfor %}  
+
+      {% if f%}
+      <tr>
+        <th scope="row">{{f.id}}</th>
+        <td>{{f.food_name}}</td>
+        <td>
+          <a href="{{ url_for('edit_food', food_id = f.id) }}"
+            class="btn btn-success" role="button">
+            Edytuj
+          </a>
+          <a href="{{ url_for('delete_food', food_id = f.id) }}"
+            class="btn btn-danger" type="button">
+              Usuń
+          </a>
+        </td>
+      </tr>
+      {% endif %}
+
+    </tbody>
+  </table>
+
+  <!-- Modal ADD -->
+  <div class="modal fade" id="add_food" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Dodaj jedzenie</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          <div class="modal-body">
+            <form method="POST" action="{{ url_for('add_food') }}">
+            <div class="col-auto">
+                <label for="first_name" class="form-label">Nazwa</label>
+                <input type="text" class="form-control" id="food_name" name="food_name" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Zapisz</button>
+          </form>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

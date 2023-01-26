@@ -1,0 +1,119 @@
+
+
+body{
+    background-color: #1d1d1d;
+
+}
+
+.table {
+    color: white;
+}
+
+.nav-link{
+    color: white;
+    
+}
+
+.nav-link:hover{
+    color: darkgrey;
+}
+
+.tb_food{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tb_users{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn_add {
+    width: 200px;
+    margin: 20px auto 10px auto;
+}
+
+.edit_row {
+    width: 30%;
+    margin: 0 auto 0 auto;
+
+}
+
+.row_crud{
+    margin-top: -40px;
+}
+
+.text_count{
+    margin-top: 80px;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.clearfix div{
+    float: left;
+    width: 10%;
+    height: 230px;
+    margin: 0.55%;
+    background-color: rgb(61, 61, 61);
+    padding: 5px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.clearfix form{
+    padding: 5px;
+    
+}
+
+.clearfix form input{
+    margin-bottom: 10px;
+}
+
+.clearfix .btn-show {
+    position: absolute;
+    bottom: 10px;
+    left: 30%;
+}
+
+.clearfix p{
+   margin-top: 10px;
+   font-size: 18px;
+}
+
+.container_results{
+    position: relative;
+    width: auto;
+}
+
+
+
+.age{
+    width: 200px;
+    height: 140px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.age p {
+    line-height: 100px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#lineChart{
+    margin: 50px 0 ;
+}

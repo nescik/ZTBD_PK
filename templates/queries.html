@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.0/chart.min.js"></script>
+    <title>{% block title%} {% endblock %}</title>
+</head>
+<body>
+    
+    <div class="container-fluid bg-dark">
+        <div class="row">
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('users', page_num=1) }}">Użytkownicy</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('food') }}">Jedzenie</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('transactions', page_num=1) }}">Transakcje</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('queries')}}">Testowe zapytania</a>
+                </li>
+              </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid my-5 ">
+        
+        <div class="container-fluid text-center text-white">
+          <div class="row">
+              <h2 class="pb-3">Scenariusze testowe</h2>
+            <div class="col clearfix">
+              <div>
+                <p>Wszystkie transakcje użytkownika o id: </p>
+                <form method="POST" action="{{ url_for('query_1') }}">
+                  <input class="form-control" type="number" id="user_id" name="user_id" placeholder="ID">
+                  <button type="submit" class="btn btn-outline-info btn-show">Pokaż</button>
+                </form>
+              </div>
+              <div>
+                <p>Wszystkie transakcje danego dnia:</p>
+                <form method="POST" action="{{ url_for('query_2') }}">
+                  <input class="form-control" type="date" id="date" name="date">
+                  <button type="submit" class="btn btn-outline-info btn-show">Pokaż</button>
+                </form>
+              </div>
+              <div>
+                <p>Wszystkie transakcje z produktem o danym id: </p>
+                <form method="POST" action="{{ url_for('query_3') }}">
+                  <input class="form-control" type="number" id="food_id" name="food_id" placeholder="ID">
+                  <button type="submit" class="btn btn-outline-info btn-show">Pokaż</button>
+                </form>
+              </div>
+              <div>
+                <p>Transakcje od do</p>
+                <form method="POST" action="{{ url_for('query_4') }}">
+                  <input class="form-control" type="date" id="date_from" name="date_from">
+                  <input class="form-control" type="date" id="date_to" name="date_to">
+                  <button type="submit" class="btn btn-outline-info btn-show">Pokaż</button>
+                </form>
+              </div>
+              <div>
+                <p>Średni wiek klientów</p>
+                <a class="btn btn-outline-info btn-show" role="button" href="{{ url_for('query_5') }}">Pokaż</a>
+              </div>
+              <div>
+                <p>Klienci z największą ilością transakcji</p>
+                <a class="btn btn-outline-info btn-show" role="button" href="{{ url_for('query_6') }}">Pokaż</a>
+              </div>
+              <div>
+                <p>Najczęściej kupowany produkt</p>
+                <a class="btn btn-outline-info btn-show" role="button" href="{{ url_for('query_7') }}">Pokaż</a>
+              </div>
+              <div>
+                <p>Jaki produktu klient o danym id kupował najczęściej</p>
+                <form method="POST" action="{{ url_for('query_8') }}">
+                  <input class="form-control" type="number" id="user_id" name="user_id" placeholder="ID">
+                  <button type="submit" class="btn btn-outline-info btn-show">Pokaż</button>
+                </form>
+              </div>
+              <div>
+                <p>Którego dnia było najwięcej transakcji </p>
+                <a class="btn btn-outline-info btn-show" role="button" href="{{ url_for('query_9') }}">Pokaż</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+        <div class="container text-white container_results">
+          {% block content %}
+          
+          {% endblock %}
+        </div>
+
+
+  
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/macy@2.5.1/dist/macy.min.js"></script>
+</body>
+</html>

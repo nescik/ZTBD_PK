@@ -1,0 +1,286 @@
+{% extends "queries.html" %}
+{% block title %}Transakcje{% endblock %}
+
+
+{% block content %}
+
+    <!-- Zapytanie 1 -->
+    {% if transactions %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Klient</th>
+            <th scope="col">Produkt</th>
+            <th scope="col">Data</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for trans, user, food in transactions%}
+            <tr>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+                <td>{{food.food_name}}</td>
+                <td>{{trans.date}}</td>
+            </tr>
+        {% endfor%}
+        </tbody>
+    </table>
+
+
+    {% endif %}
+
+    <!-- Zapytanie 2 -->
+    {% if result_date %}
+
+    
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id transakcji</th>
+            <th scope="col">Data</th>
+            <th scope="col">Imię</th>
+            <th scope="col">Klient</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for trans, user, food in result_date%}
+            <tr>
+                <td>{{trans.id}}</td>
+                <td>{{trans.date}}</td>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}} {{food.food_name}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+    </table>
+
+    {% endif %}
+
+    <!-- Zapytanie 3 -->
+    {% if food %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id transakcji</th>
+            <th scope="col">Data</th>
+            <th scope="col">Produkt</th>
+            <th scope="col">Klient</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for user, food, trans in food %}
+            <tr>
+                <td>{{trans.id}}</td>
+                <td>{{trans.date}}</td>
+                <td>[{{food.id}}] {{food.food_name}}</td>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+    </table>
+       
+    {% endif %}
+
+    <!-- Zapytanie 4 -->
+    {% if between_date %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id transakcji</th>
+            <th scope="col">Data</th>
+            <th scope="col">Produkt</th>
+            <th scope="col">Klient</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for user, food, trans in between_date%}
+            <tr>
+                <td>{{trans.id}}</td>
+                <td>{{trans.date}}</td>
+                <td>{{food.food_name}}</td>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+    </table>
+        
+    {% endif %}
+
+    <!-- Zapytanie 5 -->
+    {% if average_age%}
+        <div class="age">
+            <h4>Średnia wieku klientów:</h4>
+            <p>{{average_age}}</p>
+        </div>
+        
+    {% endif %}
+
+    <!-- Zapytanie 6 -->
+    {% if max_trans%}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Klient</th>
+            <th scope="col">Ilość transakcji</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for user, trans in max_trans%}
+            <tr>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+                <td>{{trans}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+    </table>
+
+    <canvas id="lineChart" width="900" height="400"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      var  ctx = document.getElementById('lineChart').getContext('2d')
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | safe }},
+            datasets: [{
+                label: "Ilość transakcji",
+                data: {{ values | safe }},
+                fill: false,
+                backgroundColor: '#b8b8b8',
+                borderColor: '#FF6384',
+
+            }]
+        },
+        options: {
+        scales: {
+            y: {
+                beginAtZero: true
+                }
+            }
+        }
+      });
+    </script> 
+        
+    {% endif%}
+
+    <!-- Zapytanie 7 -->
+    {% if max_sale %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Produkt</th>
+            <th scope="col">Ilość transakcji</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for food, count in max_sale%}
+            <tr>
+                <td>{{food.food_name}}</td>
+                <td>{{count}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+    </table>
+
+    <canvas id="lineChart" width="500" height="300"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      var  ctx = document.getElementById('lineChart').getContext('2d')
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels | safe }},
+            datasets: [{
+                label: "Ilość transakcji",
+                data: {{ values | safe }},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+        scales: {
+            y: {
+                beginAtZero: true
+                }
+            }
+        }
+      });
+    </script> 
+        
+    {% endif %}
+
+
+    <!-- Zapytanie 8 -->
+    {% if max_buy_by %}
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Klient</th>
+            <th scope="col">Produkt</th>
+            <th scope="col">Ilość</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for user, food, count in max_buy_by %}
+            <tr>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+                <td>[{{food.id}}] {{food.food_name}}</td>
+                <td>{{count}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+      </table>
+
+
+    {% endif %}
+
+    <!-- Zapytanie 9 -->
+    {% if max_num_trans %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Ilość transakcji</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for count, date in max_num_trans %}
+            <tr>
+                <td>{{date}}</td>
+                <td>{{count}}</td>
+            </tr>
+          {% endfor%}
+        </tbody>
+    </table>
+
+    <canvas id="lineChart" width="900" height="400"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      var  ctx = document.getElementById('lineChart').getContext('2d')
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | safe }},
+            datasets: [{
+                label: "Ilość transakcji",
+                data: {{ values | safe }},
+                fill: false,
+                backgroundColor: '#b8b8b8',
+            }]
+        },
+        options: {
+        scales: {
+            y: {
+                beginAtZero: true
+                }
+            }
+        }
+      });
+    </script> 
+
+
+    {% endif%}
+
+{% endblock %}
