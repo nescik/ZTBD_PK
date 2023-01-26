@@ -265,45 +265,6 @@ def edit_transaction(transaction_id):
         return redirect(url_for('transactions'))
 
 
-@app.route('/test_queries')
-def test_queries():
-
-    #1
-    transactions = db.session.query(Transaction, User, Food).join(User, Transaction.user_id == User.id).join(Food,Transaction.food_id == Food.id).filter(User.id == 20).limit(5)
-
-    #2
-    result_date = db.session.query(Transaction, User, Food).join(User,Transaction.user_id == User.id).join(Food,Transaction.food_id == Food.id).filter(Transaction.date == '2021-04-30').limit(5)
-    
-
-    #3
-    food = db.session.query(User, Food, Transaction).join(Transaction, Transaction.user_id == User.id).join(Food,Transaction.food_id == Food.id).filter(Transaction.food_id == 897).limit(5)
-
-    #4
-    between_date = db.session.query(User, Food, Transaction).join(Transaction, Transaction.user_id == User.id).join(Food,Transaction.food_id == Food.id).filter(Transaction.date.between('2020-08-08', '2020-12-22')).limit(5)
-
-    #5
-    result = db.session.query(func.avg(func.year(func.now()) - func.year(User.dob))).all()
-    average_age = result[0]
-    average_age = average_age[0]
-    average_age = f"{average_age:.2f}"
-
-    #6
-    max_trans = db.session.query(User, func.count(Transaction.user_id).label("transactions")).join(Transaction,Transaction.user_id == User.id).group_by(User.id).order_by(func.count(Transaction.user_id).desc()).limit(5)
-
-    #7
-    max_sale = db.session.query(Food, func.count(Transaction.food_id).label("sale")).join(Transaction, Transaction.food_id == Food.id).group_by(Food.food_name).order_by(func.count(Transaction.food_id).desc()).limit(5)
-
-    #8
-  
-    max_buy_by = db.session.query(User, Food, func.count(Transaction.food_id).label("sale")).join(Transaction, Transaction.food_id == Food.id).group_by(Food.food_name).order_by(func.count(Transaction.food_id).desc()).join(User, Transaction.user_id == User.id).filter(Transaction.user_id == 4).all()
-
-    #9
-
-    max_num_trans = db.session.query(func.count(Transaction.id).label("transactions"), Transaction.date).group_by(Transaction.date).order_by(func.count(Transaction.id).desc()).limit(5)
-
-
-    return render_template('tests.html', transactions = transactions, food = food, average_age = average_age, result_date = result_date, between_date = between_date, max_trans = max_trans, max_sale = max_sale, max_num_trans = max_num_trans, max_buy_by = max_buy_by)
-
 
 @app.route('/queries')
 def queries():
