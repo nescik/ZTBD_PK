@@ -38,7 +38,7 @@ class Transaction(db.Model):
 @app.route("/")
 def main():
 
-    """ db.create_all() """
+    db.create_all()
 
     return render_template("base.html")
 
@@ -92,7 +92,7 @@ def add_user():
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('users'))
+        return redirect(url_for('users', page_num=1))
 
 @app.route('/edit_user/<int:user_id>', methods=['POST', 'GET'])
 def edit_user(user_id):
@@ -228,7 +228,7 @@ def delete_transaction(transaction_id):
     db.session.delete(trans)
     db.session.commit()
 
-    return redirect(url_for('transactions'))
+    return redirect(url_for('transactions', page_num=1))
 
 @app.route("/search_transaction", methods=['POST', 'GET'])
 def search_transaction():
@@ -240,7 +240,7 @@ def search_transaction():
     transaction = Transaction.query.get(trans_id)
 
     if not transaction:
-        error = flash(f'Nie znaleziono traksacji o id: {trans_id}')
+        error = flash(f'Nie znaleziono transakcji o id: {trans_id}')
         return redirect(url_for('transactions', page_num=1, error=error))
 
     return render_template("transaction.html", transaction = transaction, page_num=1)
@@ -262,7 +262,7 @@ def edit_transaction(transaction_id):
 
         db.session.commit()
 
-        return redirect(url_for('transactions'))
+        return redirect(url_for('transactions', page_num=1))
 
 
 
@@ -294,7 +294,6 @@ def query_2():
 
     result_date = db.session.query(Transaction, User, Food).join(User,Transaction.user_id == User.id).join(Food,Transaction.food_id == Food.id).filter(Transaction.date == date).limit(5)
 
-    
 
     return render_template('query.html', result_date = result_date)
 

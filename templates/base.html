@@ -13,6 +13,9 @@
     <div class="container-fluid bg-dark">
         <div class="row">
             <ul class="nav justify-content-center">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main')}}">Strona Główna</a>
+              </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('users', page_num=1) }}">Użytkownicy</a>
                 </li>
@@ -34,6 +37,8 @@
         {% block content %}
 
         <h1 class="text-white text-center">Strona Główna</h1>
+
+        <h5 class="text-white text-center py-5">GUI do zarządzania bazą danych MySQL</h5>
 
         {% endblock %}
     </div>
